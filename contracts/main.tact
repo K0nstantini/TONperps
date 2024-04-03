@@ -10,25 +10,25 @@ message RemoveTrustedAddress {
 }
 
 contract Main with Deployable, Ownable {
-	owner: Address;
+    owner: Address;
     trustedAddresses: map<Address, Bool>;
 
-	init() {
-		self.owner = sender();
-	}
+    init() {
+        self.owner = sender();
+    }
 
-	receive(msg: ChangeOwner) {
+    receive(msg: ChangeOwner) {
         self.requireOwner();
         self.owner = msg.newOwner;
         self.reply(ChangeOwnerOk{ queryId: msg.queryId, newOwner:msg.newOwner }.toCell());
     }
 
-	receive(msg: AddTrustedAddress) {
+    receive(msg: AddTrustedAddress) {
         self.requireOwner();
         self.trustedAddresses.set(msg.addr, true);
     }
 
-	receive(msg: RemoveTrustedAddress) {
+    receive(msg: RemoveTrustedAddress) {
         self.requireOwner();
         self.trustedAddresses.set(msg.addr, null);
     }
